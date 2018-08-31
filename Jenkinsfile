@@ -37,7 +37,7 @@ def prepareAndRunCI() {
     String ECR_REGION          // The Elastic Container Registry Region
     String OVERRIDE_FILE       // Environment-specific Serverless configuration
 
-    IMAGE_NAME       = "menu-executor-lambda"
+    IMAGE_NAME       = "brewgorithm-training"
     IMAGE_NAME_TEMP  = "${IMAGE_NAME}-${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     TOOLS_IMAGE_NAME = "${IMAGE_NAME_TEMP}-tools"
     ECR_REGION       = "${env.ECR_REPOSITORY_REGION}"
@@ -52,10 +52,10 @@ def prepareAndRunCI() {
     switch (env.BRANCH_NAME) {
       // Set our variables as appropriate for the branch we're on.
       case "dev":
-        OVERRIDE_FILE   = "menu_executor_serverless_qa"
+        OVERRIDE_FILE   = "brewgorithm_trining_serverless_qa"
         break;
       case "master":
-        OVERRIDE_FILE   = "menu_executor_serverless_production"
+        OVERRIDE_FILE   = "brewgorithm_trining_serverless_production"
         break;
       default:
         break;
