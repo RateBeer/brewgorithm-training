@@ -1,0 +1,54 @@
+service: menu
+
+custom: ${file(serverless.override.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ${self:custom.region}
+  stage: ${self:custom.stage}
+  deploymentBucket:
+    name: ${self:custom.deploymentBucket}
+    serverSideEncryption: AES256 # when using server-side encryption
+
+plugins:
+  - serverless-plugin-include-dependencies
+
+package:
+  exclude:
+    - ./**
+    - node_modules/** # Exclude as this is handled by the plugin.
+  include:
+    - index.js
+    - README.md
+
+
+functions:
+  BrewgorithmTrainer:
+    name: BrewgorithmTraining-${self:custom.stage}
+    role: ${self:custom.role}
+    description: Starts the BrewgorithmTraining-${self:custom.stage}
+    environment:
+      GIT_REPO:                 ${self:custom.environment.GIT_REPO}
+      ECR_REGION:               ${self:custom.environment.ECR_REGION}
+      CLOUDWATCH_AWS_REGION:    ${self:custom.environment.CLOUDWATCH_AWS_REGION}
+      LOG_GROUP_NAME:           ${self:custom.environment.LOG_GROUP_NAME}
+      INSTANCE_PROFILE_NAME:    ${self:custom.environment.INSTANCE_PROFILE_NAME}
+      SUBNET_ID:                ${self:custom.environment.SUBNET_ID}
+      SECURITY_GROUPS:          ${self:custom.environment.SECURITY_GROUPS}
+      DOCKER_IMAGE:             ${self:custom.environment.DOCKER_IMAGE}
+      SSM_KEY_DEPLOY_KEY:       ${self:custom.environment.SSM_KEY_DEPLOY_KEY}
+      SSM_AWS_REGION:           ${self:custom.environment.SSM_AWS_REGION}
+      SSM_KEY_RATEBEER_DB_USER: ${self:custom.environment.SSM_KEY_RATEBEER_DB_USER}
+      SSM_KEY_RATEBEER_DB_PASS: ${self:custom.environment.SSM_KEY_RATEBEER_DB_PASS}
+      RATEBEER_DB_HOST:         ${self:custom.environment.RATEBEER_DB_HOST}
+      RATEBEER_DB_PORT:         ${self:custom.environment.RATEBEER_DB_PORT}
+      RATEBEER_DB_DATABASE:     ${self:custom.environment.RATEBEER_DB_DATABASE}
+    memorySize: "128"
+    timeout: 180
+    handler: index.handler
+    events:
+      - schedule:
+          rate: ${self:custom.events.schedule}
+          enabled: ${self:custom.events.enabled}
+

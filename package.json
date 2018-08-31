@@ -1,0 +1,29 @@
+{
+  "name": "menu-executor",
+  "version": "1.0.0",
+  "description": "kicks off menu dispatchers",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.200.0",
+    "mssql": "^4.1.0",
+    "request": "^2.83.0",
+    "serverless-plugin-include-dependencies": "^3.0.0"
+  },
+  "devDependencies": {
+    "serverless": "1.26.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "serverless deploy -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RateBeer/menu-executor.git"
+  },
+  "author": "tjbiddle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RateBeer/menu-executor/issues"
+  },
+  "homepage": "https://github.com/RateBeer/menu-executor#readme"
+}
