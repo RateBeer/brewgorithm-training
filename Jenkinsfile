@@ -52,10 +52,10 @@ def prepareAndRunCI() {
     switch (env.BRANCH_NAME) {
       // Set our variables as appropriate for the branch we're on.
       case "dev":
-        OVERRIDE_FILE   = "brewgorithm_trining_serverless_qa"
+        OVERRIDE_FILE   = "brewgorithm_training_serverless_qa"
         break;
       case "master":
-        OVERRIDE_FILE   = "brewgorithm_trining_serverless_production"
+        OVERRIDE_FILE   = "brewgorithm_training_serverless_production"
         break;
       default:
         break;
