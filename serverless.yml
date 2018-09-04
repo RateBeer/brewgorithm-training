@@ -45,6 +45,7 @@ functions:
       RATEBEER_DB_HOST:         ${self:custom.environment.RATEBEER_DB_HOST}
       RATEBEER_DB_PORT:         ${self:custom.environment.RATEBEER_DB_PORT}
       RATEBEER_DB_DATABASE:     ${self:custom.environment.RATEBEER_DB_DATABASE}
+      REGION_AWS:               ${self:custom.environment.REGION_AWS}
     memorySize: "128"
     timeout: 180
     handler: index.handler

@@ -57,7 +57,7 @@ GIT_HTTPS_TOKEN=$(/usr/local/bin/aws ssm get-parameters --name ${process.env.SSM
 # https://github.com/git-lfs/git-lfs/blob/5703b808220103063ededf5c6149c93201be9e07/docs/api/authentication.md#specified-in-url
 # We must use an HTTPS token with a machine user:
 # https://developer.github.com/v3/guides/managing-deploy-keys/#machine-users
-git clone https://${GIT_HTTPS_USER}:${GIT_HTTPS_TOKEN}@${process.env.GIT_REPO_BASE} brewgorithm
+git clone https://\${GIT_HTTPS_USER}:\${GIT_HTTPS_TOKEN}@${process.env.GIT_REPO_BASE} brewgorithm
 cd brewgorithm
 git checkout dev
 

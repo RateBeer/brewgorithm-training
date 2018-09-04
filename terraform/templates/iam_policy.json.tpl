@@ -6,7 +6,8 @@
             "Effect": "Allow",
             "Action": [
                 "ec2:RunInstances",
-                "ec2:DescribeImages"
+                "ec2:DescribeImages",
+                "ec2:CreateTags"
             ],
             "Resource": [
               "*"
