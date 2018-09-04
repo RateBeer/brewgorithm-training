@@ -18,7 +18,8 @@ variable "vpc_id" {
   description = "ID of the VPC to deploy into."
 }
 
-variable "ssm_key_deploy_key" {}
+variable "ssm_key_deploy_user" {}
+variable "ssm_key_deploy_token" {}
 variable "ssm_key_db_user" {}
 variable "ssm_key_db_pass" {}
 

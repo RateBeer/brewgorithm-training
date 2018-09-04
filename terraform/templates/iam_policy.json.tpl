@@ -45,7 +45,8 @@
                 "ssm:GetParameters"
             ],
             "Resource": [
-              "arn:aws:ssm:${aws_region}:${aws_account_id}:parameter${ssm_key_deploy_key}",
+              "arn:aws:ssm:${aws_region}:${aws_account_id}:parameter${ssm_key_deploy_user}",
+              "arn:aws:ssm:${aws_region}:${aws_account_id}:parameter${ssm_key_deploy_token}",
               "arn:aws:ssm:${aws_region}:${aws_account_id}:parameter${ssm_key_db_user}",
               "arn:aws:ssm:${aws_region}:${aws_account_id}:parameter${ssm_key_db_pass}"
             ]

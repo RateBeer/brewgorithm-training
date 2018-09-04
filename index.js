@@ -49,13 +49,15 @@ mkdir -p /tmp/models
 
 docker run --log-driver awslogs --log-opt awslogs-group=${process.env.LOG_GROUP_NAME} --log-opt awslogs-region=${process.env.CLOUDWATCH_AWS_REGION} -e RATEBEER_DB_HOST=${process.env.RATEBEER_DB_HOST} -e RATEBEER_DB_PORT=${process.env.RATEBEER_DB_PORT} -e RATEBEER_DB_DATABASE=${process.env.RATEBEER_DB_DATABASE} -e SSM_AWS_REGION=${process.env.SSM_AWS_REGION} -e SSM_KEY_RATEBEER_DB_USER=${process.env.SSM_KEY_RATEBEER_DB_USER} -e SSM_KEY_RATEBEER_DB_PASS=${process.env.SSM_KEY_RATEBEER_DB_PASS} -v /tmp/models:/models ${process.env.DOCKER_IMAGE} /bin/bash -c "python3 -m brewgorithm.src.neural.beer2vec.dev.train && cp /service/brewgorithm/models/* /models/"
 
-/usr/local/bin/aws ssm get-parameters --name ${process.env.SSM_KEY_DEPLOY_KEY} --region ${process.env.SSM_AWS_REGION} --with-decryption | jq -r '.Parameters[0].Value' > ~/.ssh/id_rsa
-chmod 600 ~/.ssh/id_rsa
+GIT_HTTPS_USER=$(/usr/local/bin/aws ssm get-parameters --name ${process.env.SSM_KEY_GIT_HTTPS_USER} --region ${process.env.SSM_AWS_REGION} --with-decryption | jq -r '.Parameters[0].Value')
+GIT_HTTPS_TOKEN=$(/usr/local/bin/aws ssm get-parameters --name ${process.env.SSM_KEY_GIT_HTTPS_TOKEN} --region ${process.env.SSM_AWS_REGION} --with-decryption | jq -r '.Parameters[0].Value')
 
-# Verified Github key
-echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==' >> ~/.ssh/known_hosts
 
-git clone ${process.env.GIT_REPO} brewgorithm
+
+# https://github.com/git-lfs/git-lfs/blob/5703b808220103063ededf5c6149c93201be9e07/docs/api/authentication.md#specified-in-url
+# We must use an HTTPS token with a machine user:
+# https://developer.github.com/v3/guides/managing-deploy-keys/#machine-users
+git clone https://${GIT_HTTPS_USER}:${GIT_HTTPS_TOKEN}@${process.env.GIT_REPO_BASE} brewgorithm
 cd brewgorithm
 git checkout dev
 
@@ -63,9 +65,7 @@ cp /tmp/models/* brewgorithm/models/
 
 git add .
 git commit -m "Brewgorithm training $(date +%Y-%m-%d)"
-
-# Bug with deploy keys and git lfs: https://github.com/git-lfs/git-lfs/issues/2291#issuecomment-305874747
-rm -f .git/hooks/pre-push
+git commit --amend --author="Brewgorithm Traininer <root@brewgorithmtrainer>" --no-edit
 git push
 
 shutdown -h now
