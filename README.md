@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/RateBeer/brewgorithm-training.svg?token=T2ttsRBxCEzfp8zVPhTP&branch=master)](https://travis-ci.com/RateBeer/brewgorithm-training)
+
 # Brewgorithm Training
 
 Lambda function that kicks off an EC2 instance to run the Brewgorithm Trainer
