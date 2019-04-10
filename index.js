@@ -68,7 +68,7 @@ git commit -m "Brewgorithm training $(date +%Y-%m-%d)"
 git commit --amend --author="Brewgorithm Traininer <root@brewgorithmtrainer>" --no-edit
 git push
 
-shutdown -h now
+sudo shutdown -h now
 `
 
   // Must Base64 encode the user data script
